@@ -28,8 +28,8 @@ const EVENTS = [
 const MAPS_URL = 'https://www.google.com/maps/place/damson+plum/data=!4m2!3m1!1s0x399bfb39f252e88b:0x9d4a6b6383d7ec6b'
 
 const PHOTOS = [
-  { label: 'Together', year: '2001', src: '/photo-2001.jpg' }, { label: 'Early days', year: '2003' },
-  { label: 'A memory', year: '2009', src: '/photo-2009.jpg' }, { label: 'A moment', year: '2014' },
+  { label: 'Together', year: '2001', src: `${import.meta.env.BASE_URL}photo-2001.jpg` }, { label: 'Early days', year: '2003' },
+  { label: 'A memory', year: '2009', src: `${import.meta.env.BASE_URL}photo-2009.jpg` }, { label: 'A moment', year: '2014' },
   { label: 'Always', year: '2020' },
 ]
 
