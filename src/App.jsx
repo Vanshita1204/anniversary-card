@@ -343,7 +343,24 @@ function Hero() {
           Lucknow &nbsp;·&nbsp; You are what makes this celebration complete
         </p>
       </div>
+      <ScrollArrow to="scratch-section" />
     </div>
+  )
+}
+
+// ── ScrollArrow ──────────────────────────────────────────────────────────────
+
+function ScrollArrow({ to }) {
+  return (
+    <button
+      className="scroll-arrow"
+      onClick={() => document.getElementById(to)?.scrollIntoView({ behavior: 'smooth' })}
+      aria-label="Scroll to next section"
+    >
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 4v16M5 13l7 7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
   )
 }
 
@@ -725,6 +742,7 @@ function ScratchCard() {
         </div>
         <canvas ref={canvasRef} className="scratch-canvas" />
       </div>
+      <ScrollArrow to="card-section" />
     </section>
   )
 }
@@ -819,6 +837,7 @@ function EventCard() {
         </div>
         <button className="book-btn" onClick={() => goTo(active + 1)} disabled={active === EVENTS.length - 1} aria-label="Next event">›</button>
       </div>
+      <ScrollArrow to="venue-section" />
     </section>
   )
 }
@@ -859,6 +878,7 @@ function VenueSection() {
           <a className="venue-map-link" href={MAPS_URL} target="_blank" rel="noopener noreferrer">📍 Open in Google Maps</a>
         </div>
       </div>
+      <ScrollArrow to="photos-section" />
     </section>
   )
 }
@@ -1040,7 +1060,7 @@ function EnvelopeScene({ onOpen }) {
 
             <div className="env-card-peek" ref={peekRef}>
               <div style={{ textAlign: 'center', padding: '12px 16px' }}>
-                <div style={{ fontFamily: "'Noto Serif Devanagari', 'Hind', sans-serif", fontSize: '0.8rem', color: '#c49a3c', letterSpacing: '0.1em', marginBottom: '4px' }}>पच्चीस वर्षों का उत्सव</div>
+                <div style={{ fontFamily: "'Noto Serif Devanagari', 'Hind', sans-serif", fontSize: '0.8rem', color: '#c49a3c', letterSpacing: '0', marginBottom: '4px' }}>पच्चीस वर्षों का उत्सव</div>
                 <div style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '1.1rem', color: '#7a4020' }}>Silver Jubilee</div>
                 <div style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg,transparent,#c49a3c,transparent)', margin: '8px auto' }} />
                 <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a06040', opacity: 0.7 }}>Shweta &amp; Deepesh Jain</div>
