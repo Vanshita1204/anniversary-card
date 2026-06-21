@@ -225,10 +225,14 @@ function Hero() {
     if (hindiEl) {
       const raw = hindiEl.textContent
       hindiEl.style.opacity = 1
-      const clusters = [...new Intl.Segmenter('hi', { granularity: 'grapheme' }).segment(raw)].map(s => s.segment)
-      hindiEl.innerHTML = clusters.map(c =>
-        c === ' ' ? ' ' : `<span class="letter" style="display:inline-block;opacity:0;transform:translateY(20px)">${c}</span>`
-      ).join('')
+      try {
+        const clusters = [...new Intl.Segmenter('hi', { granularity: 'grapheme' }).segment(raw)].map(s => s.segment)
+        hindiEl.innerHTML = clusters.map(c =>
+          c === ' ' ? ' ' : `<span class="letter" style="display:inline-block;opacity:0;transform:translateY(20px)">${c}</span>`
+        ).join('')
+      } catch {
+        // Intl.Segmenter not supported (Firefox Android, older browsers) — skip per-letter split, text already visible via inline opacity
+      }
     }
 
     const tl = anime.timeline({ easing: 'easeOutExpo' })
