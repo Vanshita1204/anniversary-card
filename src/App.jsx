@@ -13,7 +13,7 @@ const EVENTS = [
   },
   {
     event: 'फूल हल्दी', title: 'Phool Haldi', theme: 'Carnival',
-    date: '2nd July 2026', time: '11:30 am',
+    date: '2nd July 2026', time: '11:30 am onwards',
     desc: 'The glow of turmeric, the warmth of blessings. A sacred morning ritual that turns everything golden — including us.',
     dress: 'Dress festive — bring colour and joy', icon: '🌼',
   },
@@ -28,9 +28,10 @@ const EVENTS = [
 const MAPS_URL = 'https://www.google.com/maps/place/damson+plum/data=!4m2!3m1!1s0x399bfb39f252e88b:0x9d4a6b6383d7ec6b'
 
 const PHOTOS = [
-  { label: 'Together', year: '2001', src: `${import.meta.env.BASE_URL}photo-2001.jpg` }, { label: 'Early days', year: '2003' },
-  { label: 'A memory', year: '2009', src: `${import.meta.env.BASE_URL}photo-2009.jpg` }, { label: 'A moment', year: '2014' },
-  { label: 'Always', year: '2020' },
+  { label: 'Together', year: '2001', src: `${import.meta.env.BASE_URL}photo-2001.jpg` }, { label: 'Early days', year: '2003', src: `${import.meta.env.BASE_URL}photo-2003.jpg` },
+  { label: 'A memory', year: '2009', src: `${import.meta.env.BASE_URL}photo-2009.jpg` },
+  { label: 'A journey', year: '2018', src: `${import.meta.env.BASE_URL}photo-2018.jpg` },
+  { label: 'Together always', year: '2022', src: `${import.meta.env.BASE_URL}photo-2022.jpg` },
 ]
 
 // ── Sparkle utilities ───────────────────────────────────────────────────────
@@ -110,7 +111,7 @@ function HeroToran() {
         const len = rope.getTotalLength()
         rope.style.strokeDasharray = len
         rope.style.strokeDashoffset = len
-      // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
       } catch { }
     }
     anime.timeline()
@@ -209,7 +210,7 @@ function Hero() {
         const len = el.getTotalLength()
         el.style.strokeDasharray = len
         el.style.strokeDashoffset = len
-      // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
       } catch { }
     })
     anime({
@@ -340,7 +341,7 @@ function Hero() {
           <em>Shweta &amp; Deepesh Jain</em>
         </p>
         <p className="hero-tagline" id="hero-tagline">
-          Lucknow &nbsp;·&nbsp; You are what makes this celebration complete
+          You are what makes this celebration complete
         </p>
       </div>
       <ScrollArrow to="scratch-section" />
@@ -358,7 +359,7 @@ function ScrollArrow({ to }) {
       aria-label="Scroll to next section"
     >
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 4v16M5 13l7 7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 4v16M5 13l7 7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </button>
   )
@@ -466,6 +467,7 @@ function ScratchCard() {
     if (!canvas) return
     let ctx = null
     let scratchCount = 0
+    let lastPos = null
 
     function initCanvas() {
       const w = canvas.offsetWidth
@@ -617,9 +619,19 @@ function ScratchCard() {
       if (!ctx || !isDrawing.current || revealedRef.current) return
       const { x, y } = getXY(e)
       ctx.globalCompositeOperation = 'destination-out'
+      ctx.lineWidth = 52
+      ctx.lineCap = 'round'
+      ctx.lineJoin = 'round'
+      if (lastPos) {
+        ctx.beginPath()
+        ctx.moveTo(lastPos.x, lastPos.y)
+        ctx.lineTo(x, y)
+        ctx.stroke()
+      }
       ctx.beginPath()
       ctx.arc(x, y, 26, 0, Math.PI * 2)
       ctx.fill()
+      lastPos = { x, y }
 
       scratchCount++
       if (scratchCount % 6 === 0) {
@@ -632,8 +644,8 @@ function ScratchCard() {
       }
     }
 
-    const onDown = e => { isDrawing.current = true; doScratch(e) }
-    const onUp = () => { isDrawing.current = false }
+    const onDown = e => { isDrawing.current = true; lastPos = null; doScratch(e) }
+    const onUp = () => { isDrawing.current = false; lastPos = null }
     const onTouchStart = e => { e.preventDefault(); onDown(e) }
     const onTouchMove = e => { e.preventDefault(); doScratch(e) }
 
@@ -655,43 +667,31 @@ function ScratchCard() {
     }
   }, [])
 
-  // Dramatic entrance animation for revealed content
+  // Celebration animation when fully revealed
   useEffect(() => {
     if (!revealed || !revealRef.current) return
     const el = revealRef.current
-    const hindi = el.querySelector('.scratch-date-hindi')
     const date = el.querySelector('.scratch-date')
-    const line = el.querySelector('.scratch-line')
+    const hindi = el.querySelector('.scratch-date-hindi')
     const countdown = el.querySelector('.scratch-countdown')
 
-    // Set initial hidden states for each child, make parent visible
-    anime.set([hindi, date, line].filter(Boolean), { opacity: 0 })
-    if (countdown) anime.set(countdown, { opacity: 0, translateY: 22 })
-    anime.set(el, { opacity: 1 })
+    // Content is already visible — just do a spring pulse on the date
+    anime({
+      targets: [hindi, date].filter(Boolean),
+      scale: [1, 1.07, 1],
+      duration: 650,
+      easing: 'easeInOutBack',
+    })
 
-    // Staggered spring entrance
-    const tl = anime.timeline()
-    tl.add({
-      targets: hindi,
-      opacity: [0, 1], translateY: [-18, 0],
-      duration: 520, easing: 'easeOutExpo',
-    }, 0)
-    tl.add({
-      targets: date,
-      opacity: [0, 1], scale: [0.45, 1],
-      duration: 1000, easing: 'spring(1, 44, 8, 0)',
-    }, 140)
-    tl.add({
-      targets: line,
-      scaleX: [0, 1], opacity: [0, 1],
-      duration: 650, easing: 'easeOutExpo', transformOrigin: 'center center',
-    }, 560)
+    // Countdown is newly mounted — spring it in
     if (countdown) {
-      tl.add({
+      anime.set(countdown, { opacity: 0, translateY: 18 })
+      anime({
         targets: countdown,
-        opacity: [0, 1], translateY: [22, 0],
+        opacity: [0, 1], translateY: [18, 0],
         duration: 700, easing: 'spring(1, 55, 10, 0)',
-      }, 780)
+        delay: 300,
+      })
     }
   }, [revealed])
 
@@ -742,7 +742,7 @@ function ScratchCard() {
         </div>
         <canvas ref={canvasRef} className="scratch-canvas" />
       </div>
-      <ScrollArrow to="card-section" />
+      {revealed && <ScrollArrow to="card-section" />}
     </section>
   )
 }
@@ -797,7 +797,7 @@ function EventCard() {
       <SectionOrns />
       <p className="section-label" data-reveal>उत्सव</p>
       <h2 className="section-title" data-reveal>The Celebrations</h2>
-      <p className="section-sub" data-reveal>Three events · Three days of joy</p>
+      <p className="section-sub" data-reveal>Three events · Two days of joy</p>
       <GarlandDivider />
 
       <div className="book-wrapper">

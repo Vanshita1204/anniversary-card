@@ -194,17 +194,6 @@ body {
   margin: 1.4rem auto; opacity: 0;
 }
 
-.scroll-hint {
-  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  opacity: 0; color: var(--primary);
-  font-family: 'DM Sans', sans-serif; font-size: 0.65rem;
-  letter-spacing: 0.22em; text-transform: uppercase;
-}
-.scroll-arrow {
-  width: 1px; height: 28px;
-  background: linear-gradient(180deg, var(--accent), transparent);
-}
 
 /* ── Sections ────────────────────────────────────────────────────────────── */
 section {
@@ -742,15 +731,6 @@ footer::before {
     linear-gradient(160deg, #faf5e8 0%, #f0e4c8 100%);
   border: 1px solid rgba(196,154,60,0.28);
   border-radius: 16px;
-  opacity: 0; /* anime sets this to 1 on reveal */
-}
-
-/* Children start hidden — anime springs them in individually */
-.scratch-reveal .scratch-date-hindi,
-.scratch-reveal .scratch-date,
-.scratch-reveal .scratch-line,
-.scratch-reveal .scratch-countdown {
-  opacity: 0;
 }
 
 .scratch-date-hindi {
